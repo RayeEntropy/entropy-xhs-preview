@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTROPY MAKEUP · 샤오홍슈 발행 전 미리보기</title>
+<style>
+  :root{
+    --ink:#333333;
+    --ink-80:rgba(51,51,51,0.8);
+    --ink-60:rgba(51,51,51,0.6);
+    --line:rgba(0,0,0,0.08);
+    --red:#ff2e4d;
+    --page-bg:#fafafa;
+    --tag-bg:#fff4e5;
+    --tag-border:#f0c98a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"PingFang SC","Microsoft YaHei","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:var(--page-bg);
+    color:var(--ink);
+  }
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid #ececec;
+    padding:14px 20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  header .logo{
+    width:36px;height:36px;border-radius:11px;
+    background:var(--red); color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px; flex-shrink:0;
+  }
+  header h1{ font-size:15px;margin:0;font-weight:700; font-family:"Pretendard","Malgun Gothic",sans-serif; }
+  header p{ margin:2px 0 0;font-size:11.5px;color:#8a8a8a; font-family:"Pretendard","Malgun Gothic",sans-serif; }
+  header .badge{
+    margin-left:auto; font-size:10.5px; color:#b5651d;
+    background:var(--tag-bg); border:1px solid var(--tag-border);
+    padding:4px 9px; border-radius:999px; white-space:nowrap;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .notice-box{
+    max-width:760px; margin:16px auto 0; padding:14px 18px;
+    background:#f5f5f5; border-radius:12px;
+    font-size:12.5px; line-height:1.8; color:var(--ink-60);
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .notice-box p{ margin:0; }
+
+  main{
+    max-width:760px; margin:0 auto; padding:20px 14px 80px;
+    display:flex; flex-direction:column; gap:26px;
+  }
+  .note-block{ display:flex; flex-direction:column; }
+
+  /* ---- 노트 카드 (모바일 기본, 데스크톱은 미디어쿼리로 재배치) ---- */
+  .note-card{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 1px 3px rgba(0,0,0,0.05), 0 6px 18px rgba(0,0,0,0.04);
+  }
+  .content-col{ display:contents; }
+  .text-scroll{ display:contents; }
+
+  /* mobile header: back / avatar / name / outline follow / share */
+  .mobile-header{
+    order:1;
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+  }
+  .icon-btn{ width:22px;height:22px; color:#1a1a1a; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .avatar{
+    width:34px;height:34px;border-radius:50%;
+    background:#efece6; border:1px solid #ddd7c9;
+    display:block; object-fit:cover;
+    flex-shrink:0;
+  }
+  .account-name-mobile{ font-size:14.5px; font-weight:600; color:#1a1a1a; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .follow-btn-outline{
+    background:#fff; color:var(--red); border:1.3px solid var(--red);
+    font-size:13px; font-weight:600; border-radius:100px;
+    padding:5px 13px; cursor:default; flex-shrink:0;
+  }
+
+  /* desktop header: avatar / name / filled follow (hidden on mobile) */
+  .desktop-header{
+    display:none;
+    align-items:center; gap:10px;
+    padding:20px 20px 14px;
+  }
+  .account-name-desktop{ font-size:15px; color:var(--ink-80); }
+  .follow-btn-filled{
+    margin-left:auto;
+    background:var(--red); color:#fff; font-size:14.5px; font-weight:600;
+    border:none; border-radius:100px; padding:7px 20px; cursor:default;
+  }
+
+  /* media */
+  .media-container{
+    order:2;
+    position:relative;
+    overflow:hidden;
+    background:#000;
+    width:100%;
+    aspect-ratio:4/5.04;
+  }
+  .carousel-track{ display:flex; height:100%; transition:transform .35s ease; }
+  .slide{ min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#000; position:relative; }
+  .slide video, .slide img{ width:100%; height:100%; object-fit:contain; display:block; background:#000; }
+  .slide video.fit-cover, .slide img.fit-cover{ object-fit:cover; }
+  .overlay-left{
+    position:absolute; top:10px; left:10px; z-index:6;
+    background:rgba(0,0,0,0.55); color:#fff; font-size:11px; font-weight:600;
+    padding:3px 9px; border-radius:999px;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .overlay-right{
+    position:absolute; top:10px; right:10px; z-index:6;
+    background:rgba(0,0,0,0.45); color:#fff; font-size:11px; font-weight:600;
+    padding:3px 9px; border-radius:999px;
+  }
+  .mute-btn{
+    position:absolute; bottom:10px; right:10px; z-index:6;
+    width:26px;height:26px;border-radius:50%;
+    background:rgba(0,0,0,0.45); color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    border:none; cursor:pointer;
+  }
+  .mute-btn svg{ width:15px; height:15px; }
+  .tap-layer{ position:absolute; inset:0; z-index:5; cursor:pointer; }
+  .progress-track{
+    position:absolute; left:0; right:0; bottom:0; z-index:8;
+    height:8px; display:flex; align-items:center; cursor:pointer; touch-action:none;
+  }
+  .progress-line{ position:relative; width:100%; height:3px; background:rgba(255,255,255,0.35); }
+  .progress-fill{ position:absolute; left:0; top:0; height:100%; width:0%; background:var(--red); }
+  .dots-row{ display:flex; justify-content:center; gap:5px; padding:8px 0 2px; background:#fff; position:static; }
+  .dot{ width:5px;height:5px;border-radius:50%; background:#e0e0e0; }
+  .carousel-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:28px;height:28px;border-radius:50%;
+    background:rgba(0,0,0,0.35); color:#fff; border:none; cursor:pointer;
+    display:flex;align-items:center;justify-content:center; font-size:13px; z-index:6;
+    opacity:0; transition:opacity .2s;
+  }
+  .media-container:hover .carousel-nav{opacity:1;}
+  .carousel-nav.prev{left:8px;}
+  .carousel-nav.next{right:8px;}
+
+  /* text content */
+  .note-title{ order:4; font-size:16.5px; font-weight:600; color:var(--ink); margin:0; padding:14px 14px 6px; }
+  .note-desc{ order:5; font-size:14.5px; line-height:1.65; color:var(--ink); white-space:pre-wrap; word-break:break-word; padding:0 14px; }
+  .tag-blue{ color:#335380; }
+  .meta-row{ order:6; font-size:12.5px; color:var(--ink-60); padding:14px 14px 0; font-family:"Pretendard","Malgun Gothic",sans-serif; }
+  .divider{ order:7; border-top:0.8px solid var(--line); margin:14px 14px 0; }
+  .engage-bar{ order:8; display:flex; align-items:center; gap:10px; padding:12px 14px 16px; }
+  .comment-pill{
+    flex:1; display:flex; align-items:center; gap:6px; min-width:0;
+    background:#f5f5f5; border-radius:999px; padding:8px 14px;
+    color:#a3a3a3; font-size:13.5px;
+  }
+  .comment-pill svg{ width:15px;height:15px; flex-shrink:0; }
+  .comment-pill span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .engage-icons{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+  .engage-item{ display:flex; align-items:center; gap:3px; color:#333; font-size:13px; }
+  .engage-item svg{ width:21px; height:21px; color:#333; }
+  .engage-item .count{ color:#b3b3b3; font-size:12.5px; }
+  .share-in-engage{ display:none; }
+
+  /* ---- 데스크톱(PC 웹) 레이아웃 ---- */
+  @media (min-width:701px){
+    .note-card{ flex-direction:row; height:460px; }
+    .mobile-header{ display:none; }
+    .content-col{ display:flex; flex-direction:column; flex:1 1 50%; max-width:50%; order:0; }
+    .desktop-header{ display:flex; }
+    .media-container{ flex:1 1 50%; max-width:50%; height:100%; order:0; }
+    .text-scroll{ display:block; flex:1 1 auto; min-height:0; overflow-y:auto; }
+    .text-scroll::-webkit-scrollbar{ width:5px; }
+    .text-scroll::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.15); border-radius:3px; }
+    .dots-row{ position:absolute; bottom:16px; left:0; right:0; background:transparent; padding:0; z-index:6; }
+    .dots-row .dot{ background:rgba(255,255,255,0.55); }
+    .note-title{ font-size:18px; padding:0 24px 8px; }
+    .note-desc{ font-size:15px; padding:0 24px; }
+    .meta-row{ padding:16px 24px 0; }
+    .divider{ margin:16px 24px 0; }
+    .engage-bar{ padding:14px 24px 20px; }
+    .share-in-engage{ display:flex; }
+  }
+
+  .translation-box{
+    background:var(--tag-bg);
+    border:1px dashed var(--tag-border);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:10px;
+  }
+  .translation-badge{
+    display:inline-block; font-size:11px; font-weight:700; color:#b5651d;
+    background:#fff; border:1px solid var(--tag-border);
+    padding:2px 8px; border-radius:999px; margin-bottom:8px;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .caption-ko{
+    font-size:13.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word;
+    color:#5c4a30;
+    font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  }
+
+  .subtitle-box{
+    background:#eef4ff;
+    border:1px dashed #a9c6f5;
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:10px;
+  }
+  .subtitle-badge{
+    display:inline-block; font-size:11px; font-weight:700; color:#2f5fa8;
+    background:#fff; border:1px solid #a9c6f5;
+    padding:2px 8px; border-radius:999px; margin-bottom:8px;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .caption-subtitle{
+    font-size:13.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word;
+    color:#2c3e5c;
+    font-family:"Pretendard","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  }
+
+  footer{
+    max-width:760px; margin:0 auto 40px; padding:0 14px;
+    font-size:12px; color:#8a8a8a; text-align:center;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">E</div>
+  <div>
+    <h1>ENTROPY MAKEUP · 샤오홍슈 미리보기</h1>
+  </div>
+  <div class="badge">발행 전 · 내부 검토 전용</div>
+</header>
+
+<div class="notice-box">
+  <p>· 본 페이지는 샤오홍슈 화면을 재현한 발행 전 미리보기용</p>
+  <p>· 한국어 번역은 참고용이며, 뉘앙스가 다소 다를 수 있음</p>
+  <p>· 태그는 샤오홍슈 트렌드에 따라 변경 가능</p>
+  <p>· 도우인(抖音)에도 동일 콘텐츠 업로드 예정, 텍스트만 더 간결하게 조정 / 별도 미리보기는 없음</p>
+</div>
+
+<main id="feed"></main>
+
+<footer>
+  하단 노란 점선 박스의 한국어 번역은 검토 편의를 위한 내부 참고 주석이며, 실제 게시물에는 포함되지 않습니다. 좋아요·저장·댓글 수치는 발행 전이라 표시하지 않았습니다.
+</footer>
+
+<script>
+const ICONS = {
+  back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`,
+  share: `<svg viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M19.138 3.442a4.92 4.92 0 0 0-6.96 0l-1.42 1.42a.904.904 0 0 0 1.278 1.278l1.42-1.42a3.114 3.114 0 0 1 4.404 0l1.42 1.42a3.114 3.114 0 0 1 0 4.404l-2.841 2.841a3.114 3.114 0 0 1-4.403 0l-.71-.71a.904.904 0 0 0-1.28 1.278l.711.71a4.92 4.92 0 0 0 6.96 0l2.842-2.84a4.92 4.92 0 0 0 0-6.961z"/><path fill="currentColor" d="M4.862 20.559a4.92 4.92 0 0 0 6.96 0l1.634-1.634a.904.904 0 0 0-1.278-1.279l-1.634 1.634a3.114 3.114 0 0 1-4.404 0l-1.42-1.42a3.114 3.114 0 0 1 0-4.404l2.841-2.841a3.114 3.114 0 0 1 4.403 0l.71.71a.904.904 0 0 0 1.28-1.278l-.711-.71a4.92 4.92 0 0 0-6.96 0l-2.841 2.84a4.92 4.92 0 0 0 0 6.961z"/></svg>`,
+  pencil: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+  like: `<svg viewBox="0 0 16 16" fill="none"><path fill="currentColor" d="M3.256 3.913a3.083 3.083 0 0 0-.003 4.397L8 12.998l4.743-4.684a3.085 3.085 0 0 0 .001-4.4c-.6-.593-1.4-.914-2.233-.914a3.17 3.17 0 0 0-1.91.635L8 4.087l-.601-.452A3.17 3.17 0 0 0 5.489 3c-.834 0-1.634.321-2.233.913m10.19 5.111-4.748 4.69a.996.996 0 0 1-1.397 0L2.549 9.02a4.083 4.083 0 0 1 .004-5.82A4.17 4.17 0 0 1 5.488 2c.907 0 1.787.29 2.512.835A4.17 4.17 0 0 1 10.51 2c1.093 0 2.146.422 2.936 1.202a4.085 4.085 0 0 1 0 5.822"/></svg>`,
+  collect: `<svg viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M18.865 19.503a1.81 1.81 0 0 1-.737 1.649 1.82 1.82 0 0 1-1.8.196L12.2 19.546a.5.5 0 0 0-.4 0l-4.127 1.802a1.82 1.82 0 0 1-1.801-.196 1.81 1.81 0 0 1-.737-1.65l.452-4.384a.5.5 0 0 0-.127-.386l-2.994-3.32a1.81 1.81 0 0 1-.377-1.77c.2-.615.713-1.077 1.347-1.213l4.404-.945a.5.5 0 0 0 .326-.235l2.265-3.853a1.82 1.82 0 0 1 3.138 0l2.265 3.853a.5.5 0 0 0 .326.235l4.404.945a1.808 1.808 0 0 1 .97 2.984l-2.994 3.319a.5.5 0 0 0-.127.386zm-1.662-5.977 2.994-3.32q.004-.004.003-.007-.001-.006-.013-.01l-4.404-.945a2.3 2.3 0 0 1-1.5-1.083l-2.266-3.853Q12.014 4.302 12 4.3q-.015.002-.017.008L9.718 8.161a2.3 2.3 0 0 1-1.5 1.083l-4.405.945q-.012.004-.013.01 0 .003.003.008l2.994 3.32a2.3 2.3 0 0 1 .58 1.776l-.452 4.384q-.001.001.005.01l.01.003h.002q.006 0 .01-.002l4.128-1.801a2.3 2.3 0 0 1 1.84 0l4.127 1.801.012.002.01-.004q.008-.008.006-.009l-.452-4.384a2.3 2.3 0 0 1 .58-1.777"/></svg>`,
+  chat: `<svg viewBox="0 0 24 24" fill="none"><path fill="currentColor" fill-rule="evenodd" d="m3.925 17.006 1.528-.95c.308.496.389 1.11.199 1.681L5.09 19.42l.237-.044c.44-.08.903-.162 1.299-.223.337-.053.784-.118 1.098-.118.459 0 .968.138 1.255.216l.077.02c.7.187 1.61.429 2.943.429 4.234 0 7.7-3.45 7.7-7.7a7.7 7.7 0 1 0-14.247 4.056zM2.917 20.25a.95.95 0 0 0 .882 1.25q.018 0 .036-.003c.252-.051 3.3-.662 3.89-.662.208 0 .492.076.868.176.739.197 1.833.489 3.407.489 5.225 0 9.5-4.253 9.5-9.5a9.5 9.5 0 1 0-17.576 5.006c.03.049.038.108.02.162z" clip-rule="evenodd"/></svg>`,
+  speaker: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>`,
+  mute: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`
+};
+
+const NOTES = [
+  {
+    folder: "1",
+    media: [
+      {type:"image", src:"1/首图.jpg"},
+      {type:"video", src:"1/C6试色.mp4"},
+      {type:"video", src:"1/C8试色.mp4"},
+      {type:"video", src:"1/G4试色.mp4"}
+    ],
+    zh: `☕如咖啡般浓郁的时髦棕咖色
+
+黄皮必备的裸咖色，温柔又有气场，一年四季都不会出错
+像一杯醇厚绵密的摩卡，木质裸调高级又沉稳🤎
+哑光慕斯质地轻薄好推开，水光质地清透有光泽
+
+#C6 WATER WOOD CHARM 白开水妆必备的乌龙奶茶色
+#C8 SMOKY QUARTZ CHARM 超级高级的低饱和土棕色
+#G4 GARNET GEM 亚裔天菜木质调裸棕
+
+这三只棕调唇釉，一抹就有温柔氛围感~
+
+#ENTROPY #Charm Tint试色 #口棕 #黄皮显白唇色`,
+    ko: `☕ 커피처럼 진한 트렌디 브라운 컬러
+
+웜톤 필수템 뉴트럴 브라운, 부드러우면서도 존재감 있어서 사계절 실패 없어요
+진하고 크리미한 모카 한 잔 같은 느낌, 우디한 뉴트럴 톤이라 고급스럽고 차분해요🤎
+매트 무스 텍스처는 가볍게 발리고, 워터 글로우 텍스처는 맑고 윤기 있어요
+
+#C6 WATER WOOD CHARM 자연스러운 데일리 메이크업에 딱인 우롱밀크티 컬러
+#C8 SMOKY QUARTZ CHARM 채도 낮은 고급스러운 흙갈색
+#G4 GARNET GEM 동양인 피부에 찰떡인 우디 뉴트럴 브라운
+
+브라운 틴트 세 가지, 한 번만 발라도 은은한 무드가 살아나요~
+
+#ENTROPY #참틴트 발색 #브라운틴트 #웜톤 화사 립컬러`,
+    subtitle: `물빛을 가득 머금은 듯 투명하게, 누디 우드 베이지
+스모키한 위스키향이 진하게 풍기는, 딥 모카 브라운
+진한 카멜 가죽의 고급스러움, 딥 누디 브라운`
+  },
+  {
+    folder: "2",
+    media: [
+      {type:"image", src:"2/首图2.jpg"},
+      {type:"video", src:"2/3250e55ae3d59ae95c028e4cb83af821.mp4"},
+      {type:"video", src:"2/entropymakeup_DB-xOBbpIR4_video.mp4"}
+    ],
+    zh: `💄丝绒柔雾感，唇颊两用一抹显气色
+
+柔雾不干的天鹅绒质感，上嘴一秒化开
+唇颊两用的柔雾感哑光唇釉，轻薄好推开
+调色高级，随便抹抹都好看！
+
+#G1 QUARTZ GEM 自带毛茸茸柔和感的三文鱼粉色
+#G2 CORAL GEM 夏日必备的低饱和奶油蜜桃橘
+#G3 PEACH STONE GEM 早八通勤人必备的裸米色
+#G4 GARNET GEM 彰显个性的榛果巧克力棕
+#G5 TOPAZ GEM 温柔又气质的雾感玫瑰棕
+
+五个色号你更喜欢哪一只呢？
+
+#ENTROPY #唇颊两用 #柔雾哑光唇釉 #日常显气色`,
+    ko: `💄 벨벳 같은 소프트 매트, 립+볼 한 번에 화사하게
+
+매트한데 안 당기는 벨벳 텍스처, 바르자마자 사르르 밀착돼요
+입술+볼 겸용 소프트 매트 틴트, 가볍게 발려요
+발색이 고급스러워서 대충 발라도 예뻐요!
+
+#G1 QUARTZ GEM 몽글몽글 부드러운 새먼 핑크
+#G2 CORAL GEM 여름 필수, 채도 낮은 크림 피치 오렌지
+#G3 PEACH STONE GEM 출근길 필수템, 뉴트럴 베이지
+#G4 GARNET GEM 개성 있는 헤이즐넛 초콜릿 브라운
+#G5 TOPAZ GEM 부드러우면서 분위기 있는 무드 로즈 브라운
+
+다섯 가지 컬러 중 어떤 게 제일 마음에 드세요?
+
+#ENTROPY #립앤치크 겸용 #소프트 매트 틴트 #데일리 생기 컬러`,
+    subtitle: `흰 끼 도는 살몬 핑크 #라이트 베이스
+누디 소프트 베이지 #소프트 베이스
+밀키한 뉴트럴 코랄 #뉴트럴 베이스
+깊은 누디 브라운 #딥 베이스
+쿨한 로지 브라운 #딥 베이스`
+  },
+  {
+    folder: "3",
+    media: [
+      {type:"video", src:"3/视频画面+试色音频合成.mp4"}
+    ],
+    zh: `闭眼冲！Charm Tint 水光唇釉5色试色🌟
+
+上嘴直接通透爆汁，水光感拉满，涂完直接收获透亮玻璃唇
+5个色号随便挑一个都不会踩雷
+
+🤍 C6 Water Wood Charm
+裸杏雾色在水光釉层间若隐若现，像被泉水浸润过的烟色楠木，温柔又高级
+🍷 C7 Spinel Charm
+晨光中化开的烟熏李酿色，微醺感十足，日常显白不挑皮
+☕ C8 Smoky Quartz Charm
+威士忌桶陈的烟熏感融进深烘摩卡釉光，氛围感拿捏
+🩶 C9 Beryl Charm
+汝窑天青釉层间沉淀出的高级灰调玫瑰，温柔有气质
+🍇 C10 Taaffeite Charm
+冷萃葡萄原浆淬炼出的透岩釉光，冷感葡萄紫气场全开
+
+姐妹们直接安排上！评论区蹲一个你们的本命色号～`,
+    ko: `고민 없이 GO! Charm Tint 물광 틴트 5컬러 발색🌟
+
+바르자마자 촉촉 물광, 유리알 입술 완성돼요
+5개 컬러 중 뭘 골라도 실패 없어요
+
+🤍 C6 Water Wood Charm
+은은한 살구빛 뉴드가 물광 사이로 비치는, 물기 머금은 자단목처럼 부드럽고 고급스러운 컬러
+🍷 C7 Spinel Charm
+아침 햇살에 번지는 스모키 자두빛, 살짝 취한 듯한 무드로 톤 안 타고 화사해 보여요
+☕ C8 Smoky Quartz Charm
+위스키 오크통에서 우러난 듯한 스모키함이 짙은 모카 광택에 녹아든, 분위기 있는 컬러
+🩶 C9 Beryl Charm
+은은한 그레이 톤 로즈, 부드럽고 우아한 느낌
+🍇 C10 Taaffeite Charm
+시원하게 짜낸 포도즙 같은 투명한 퍼플, 쿨한 존재감 폭발
+
+얼른 득템하세요! 댓글에 여러분 인생 컬러 알려주세요~`
+  },
+  {
+    folder: "4",
+    media: [
+      {type:"video", src:"4/氛围感视频_7.7.mp4"}
+    ],
+    zh: `随身携带的，不只是颜色👜
+
+今天的包，多了一点点小心机
+以前补口红总要在包里摸半天，现在直接挂在外面
+想涂的时候拿起来就能用，地铁上也能顺手补一下
+走到哪儿，带到哪儿，和entropy一起，出门的仪式感从包开始✨
+
+#ENTROPY #钥匙扣唇釉 #包包挂件 #通勤唇妆`,
+    ko: `늘 함께하는 건, 컬러만이 아니에요👜
+
+오늘 가방엔 작은 꿀템 하나 추가됐어요
+예전엔 립 찾으려고 가방 속을 한참 뒤졌는데, 이제는 밖에 걸어두면 끝
+바르고 싶을 때 바로 꺼내 쓰고, 지하철에서도 스윽 터치 가능해요
+어디를 가든, entropy와 함께라면 외출의 설렘은 가방에서부터 시작돼요✨
+
+#ENTROPY #키링 틴트 #가방 액세서리 #출근길 립메이크업`
+  },
+  {
+    folder: "5",
+    media: [
+      {type:"video", src:"5/哑光唇釉_zh_7.7.mp4"}
+    ],
+    zh: `五色哑光唇釉，单涂叠涂都精彩
+
+天鹅绒质感，上嘴丝滑轻盈贴合，一抹显色
+单涂已经很能打，叠涂更有层次感
+
+#G1 QUARTZ GEM 一秒中和暗沉的三文鱼粉色，万能打底色，单涂也OK
+#G2 CORAL GEM 俏皮的珊瑚橘调，怎么涂都不会出错，日常通勤直接安排
+#G3 PEACH STONE GEM 像一口咬开刚好熟透的橘子，汁水感藏在雾面质地里，涂上就有元气
+#G4 GARNET GEM 肉桂可可红棕调，可浓可淡，拍在颧骨当腮红氛围感直接拉满
+#G5 TOPAZ GEM 冷紫调葡萄色，一看就是深冬人的本命色
+
+叠涂王炸组合安排上了，照着涂不会错——
+
+✨ G1 + G4：三文鱼粉打底中和暗沉，叠上肉桂可可
+✨ G2 + G3：珊瑚加上橘调，气色感直接开挂
+✨ G1 + G5：三文鱼粉压冷紫葡萄，冷暖调中和刚好
+
+哑光唇釉终于不用纠结拔干问题了，单涂+叠涂两种不同玩法，快来试试吧~
+
+#ENTROPY #钥匙扣唇釉 #韩女的秘密`,
+    ko: `매트 틴트 5컬러, 단독으로도 레이어링으로도 완벽
+
+벨벳 텍스처라 산뜻하게 밀착되고, 한 번만 발라도 컬러감 확실해요
+단독 사용도 예쁘지만 레이어링하면 더 입체적으로 보여요
+
+#G1 QUARTZ GEM 칙칙함을 한 번에 잡아주는 새먼 핑크, 만능 베이스 컬러라 단독으로도 OK
+#G2 CORAL GEM 상큼한 코랄 오렌지, 어떻게 발라도 예쁜 출근룩 필수템
+#G3 PEACH STONE GEM 딱 잘 익은 복숭아를 한입 베어문 듯한, 매트한 텍스처 안에 과즙감이 살아있는 컬러
+#G4 GARNET GEM 시나몬 코코아 브라운, 진하게도 연하게도 연출 가능하고 광대에 발라 블러셔로 써도 분위기 최고
+#G5 TOPAZ GEM 쿨톤 퍼플, 딱 봐도 겨울 인생 컬러
+
+레이어링 꿀조합 정리했어요, 그대로 따라 바르면 실패 없어요——
+
+✨ G1 + G4: 새먼 핑크로 칙칙함 잡고 시나몬 코코아 레이어링
+✨ G2 + G3: 코랄에 오렌지 톤 더해서 혈색 폭발
+✨ G1 + G5: 새먼 핑크로 쿨 퍼플 톤 다운, 웜쿨 밸런스 딱 맞아요
+
+매트 틴트인데 이제 건조함 걱정 끝, 단독+레이어링 두 가지 방법으로 즐겨보세요~
+
+#ENTROPY #키링 틴트`,
+    subtitle: `두 컬러를 함께 매치하면 입체감이 확 살아나요
+좋아하는 스티커 붙여서 나만의 키링으로 꾸며보세요~`
+  },
+  {
+    folder: "6",
+    media: [
+      {type:"video", src:"6/7月8日.mp4"}
+    ],
+    zh: `💼办公室人手一只的entropy钥匙扣唇釉
+
+不只是唇釉，更是包包上的时尚小挂件，兼顾了实用和好看！
+无论是挂在包上，还是当作随身小物，都能瞬间提升精致度，让你随时都成为焦点✨
+上嘴显气色，用起来也不拔干，日常通勤、约会都能用~
+
+#ENTROPY #钥匙扣唇釉 #包包挂件 #办公室好物 #日常通勤唇妆`,
+    ko: `💼 사무실 동료들이 하나씩 다 가지고 있는 entropy 키링 틴트
+
+틴트이자 가방에 다는 패션 소품, 실용성과 예쁨을 동시에 챙겼어요!
+가방에 걸어도 좋고 파우치에 쏙 넣고 다녀도 좋은, 어디서든 포인트가 되는 아이템✨
+발색도 좋고 건조하지도 않아서 출근길, 데이트 모두 잘 어울려요~
+
+#ENTROPY #키링 틴트 #가방 액세서리 #오피스 아이템 #데일리 출근 메이크업`
+  },
+  {
+    folder: "7",
+    media: [
+      {type:"video", src:"7/粉底液修正版.mp4"}
+    ],
+    zh: `😲什么？刮刀和粉底液长一起了？
+
+刮刀和粉底液一体式设计，不用额外再带工具
+用刮刀直接蘸取上脸，量好控制，也不会沾手，出门带一支就够了
+上脸轻盈薄透，贴肤不假面，日常通勤淡妆用刚好🤍
+
+#ENTROPY #刮刀粉底液 #一体式设计 #伪素颜粉底 #日常通勤淡妆`,
+    ko: `😲 뭐야? 스패츌러랑 파운데이션이 하나가 됐다고?
+
+스패츌러 일체형 디자인이라 따로 도구 챙길 필요 없어요
+스패츌러로 바로 떠서 바르면 양 조절도 쉽고 손에 묻지도 않아요, 외출할 때 이거 하나면 끝
+얇고 가볍게 밀착되는 텍스처라 마스크 같은 느낌 없이, 가벼운 데일리 메이크업에 딱이에요🤍
+
+#ENTROPY #스패츌러 파운데이션 #일체형 디자인 #데일리 라이트 메이크업`,
+    subtitle: `엔트로피 오간자 핏 스파츌라 파운데이션
+스패츌러 일체형 파운데이션이에요
+텍스처가 얇고 가벼워서 고르게 발려요
+쓰고 나서 닦아 넣으면 잘 안 새요`
+  }
+];
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderTextWithTags(text){
+  return text.split('\n').map(line => {
+    const hashCount = (line.match(/#/g) || []).length;
+    const escaped = escapeHtml(line);
+    return hashCount >= 2 ? `<span class="tag-blue">${escaped}</span>` : escaped;
+  }).join('\n');
+}
+
+function splitTitleBody(zh){
+  const lines = zh.split('\n');
+  const title = lines[0];
+  const rest = lines.slice(1).join('\n').replace(/^\n+/, '');
+  return {title, rest};
+}
+
+function buildCard(note, idx){
+  const block = document.createElement('div');
+  block.className = 'note-block';
+
+  const card = document.createElement('div');
+  card.className = 'note-card';
+
+  const {title, rest} = splitTitleBody(note.zh);
+
+  // mobile header (visible on phones, above media)
+  const mobileHeader = document.createElement('div');
+  mobileHeader.className = 'mobile-header';
+  mobileHeader.innerHTML = `
+    <span class="icon-btn">${ICONS.back}</span>
+    <img class="avatar" src="assets/avatar.png" alt="entropy make up">
+    <div class="account-name-mobile">entropy make up</div>
+    <button class="follow-btn-outline">关注</button>
+    <span class="icon-btn">${ICONS.share}</span>
+  `;
+
+  // media
+  const mediaCol = document.createElement('div');
+  mediaCol.className = 'media-container';
+
+  const noteIndex = document.createElement('div');
+  noteIndex.className = 'overlay-left';
+  noteIndex.textContent = (idx+1) + ' / ' + NOTES.length;
+  mediaCol.appendChild(noteIndex);
+
+  const track = document.createElement('div');
+  track.className = 'carousel-track';
+  const videos = [];
+  note.media.forEach(m => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    if(m.type === 'video'){
+      const v = document.createElement('video');
+      v.src = encodeURI(m.src);
+      if(m.fit === 'cover') v.classList.add('fit-cover');
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.preload = 'metadata';
+      slide.appendChild(v);
+      videos.push(v);
+
+      const tapLayer = document.createElement('div');
+      tapLayer.className = 'tap-layer';
+      tapLayer.addEventListener('click', () => { v.paused ? v.play().catch(()=>{}) : v.pause(); });
+      slide.appendChild(tapLayer);
+
+      const muteBtn = document.createElement('button');
+      muteBtn.className = 'mute-btn';
+      muteBtn.innerHTML = ICONS.mute;
+      muteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        v.muted = !v.muted;
+        muteBtn.innerHTML = v.muted ? ICONS.mute : ICONS.speaker;
+      });
+      slide.appendChild(muteBtn);
+
+      const progressTrack = document.createElement('div');
+      progressTrack.className = 'progress-track';
+      const progressLine = document.createElement('div');
+      progressLine.className = 'progress-line';
+      const progressFill = document.createElement('div');
+      progressFill.className = 'progress-fill';
+      progressLine.appendChild(progressFill);
+      progressTrack.appendChild(progressLine);
+      slide.appendChild(progressTrack);
+
+      v.addEventListener('timeupdate', () => {
+        if(v.duration){ progressFill.style.width = (v.currentTime / v.duration * 100) + '%'; }
+      });
+
+      function seekFromClientX(clientX){
+        const rect = progressLine.getBoundingClientRect();
+        const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        if(v.duration){
+          v.currentTime = ratio * v.duration;
+          progressFill.style.width = (ratio * 100) + '%';
+        }
+      }
+
+      let scrubbing = false;
+      progressTrack.addEventListener('pointerdown', e => {
+        e.stopPropagation();
+        scrubbing = true;
+        progressTrack.setPointerCapture(e.pointerId);
+        seekFromClientX(e.clientX);
+      });
+      progressTrack.addEventListener('pointermove', e => {
+        if(!scrubbing) return;
+        e.stopPropagation();
+        seekFromClientX(e.clientX);
+      });
+      progressTrack.addEventListener('pointerup', e => { scrubbing = false; e.stopPropagation(); });
+      progressTrack.addEventListener('pointercancel', e => { scrubbing = false; e.stopPropagation(); });
+      progressTrack.addEventListener('click', e => e.stopPropagation());
+      ['touchstart','touchmove','touchend'].forEach(evt => progressTrack.addEventListener(evt, e => e.stopPropagation()));
+    } else {
+      const img = document.createElement('img');
+      img.src = encodeURI(m.src);
+      if(m.fit === 'cover') img.classList.add('fit-cover');
+      slide.appendChild(img);
+    }
+    track.appendChild(slide);
+  });
+  mediaCol.appendChild(track);
+
+  let current = 0;
+  const total = note.media.length;
+
+  if(total > 1){
+    const slideCounter = document.createElement('div');
+    slideCounter.className = 'overlay-right';
+    slideCounter.textContent = '1/' + total;
+    mediaCol.appendChild(slideCounter);
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'carousel-nav prev';
+    prevBtn.innerHTML = '&#10094;';
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'carousel-nav next';
+    nextBtn.innerHTML = '&#10095;';
+    mediaCol.appendChild(prevBtn);
+    mediaCol.appendChild(nextBtn);
+
+    const dotsRow = document.createElement('div');
+    dotsRow.className = 'dots-row';
+    const dotEls = [];
+    note.media.forEach((_,i) => {
+      const d = document.createElement('div');
+      d.className = 'dot';
+      dotsRow.appendChild(d);
+      dotEls.push(d);
+    });
+    mediaCol.appendChild(dotsRow);
+
+    function pauseAllVideos(){ videos.forEach(v => v.pause()); }
+    function goTo(i){
+      current = (i + total) % total;
+      track.style.transform = 'translateX(-' + (current*100) + '%)';
+      slideCounter.textContent = (current+1) + '/' + total;
+      dotEls.forEach((d,i2) => d.style.background = i2===current ? '#ff2e4d' : '#e0e0e0');
+      pauseAllVideos();
+    }
+    prevBtn.addEventListener('click', () => goTo(current-1));
+    nextBtn.addEventListener('click', () => goTo(current+1));
+
+    let touchStartX = null;
+    mediaCol.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+    mediaCol.addEventListener('touchend', e => {
+      if(touchStartX === null) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if(Math.abs(dx) > 40){ dx > 0 ? goTo(current-1) : goTo(current+1); }
+      touchStartX = null;
+    });
+    dotEls[0].style.background = '#ff2e4d';
+  }
+
+  // content column (grouped on desktop, flattened via display:contents on mobile)
+  const contentCol = document.createElement('div');
+  contentCol.className = 'content-col';
+  contentCol.innerHTML = `
+    <div class="desktop-header">
+      <img class="avatar" src="assets/avatar.png" alt="entropy make up">
+      <div class="account-name-desktop">entropy make up</div>
+      <button class="follow-btn-filled">关注</button>
+    </div>
+    <div class="text-scroll">
+      <p class="note-title"></p>
+      <div class="note-desc"></div>
+    </div>
+    <div class="meta-row">미리보기</div>
+    <div class="divider"></div>
+    <div class="engage-bar">
+      <div class="comment-pill">${ICONS.pencil}<span>说点什么...</span></div>
+      <div class="engage-icons">
+        <span class="engage-item">${ICONS.like}<span class="count">-</span></span>
+        <span class="engage-item">${ICONS.collect}<span class="count">-</span></span>
+        <span class="engage-item">${ICONS.chat}<span class="count">-</span></span>
+        <span class="engage-item share-in-engage">${ICONS.share}</span>
+      </div>
+    </div>
+  `;
+  contentCol.querySelector('.note-title').textContent = title;
+  contentCol.querySelector('.note-desc').innerHTML = renderTextWithTags(rest);
+
+  card.appendChild(mobileHeader);
+  card.appendChild(mediaCol);
+  card.appendChild(contentCol);
+
+  const translationBox = document.createElement('div');
+  translationBox.className = 'translation-box';
+  translationBox.innerHTML = `
+    <div class="translation-badge">번역 (내부 검토용 · 실제 미발행)</div>
+    <div class="caption-ko"></div>
+  `;
+  translationBox.querySelector('.caption-ko').innerHTML = renderTextWithTags(note.ko);
+
+  block.appendChild(card);
+  block.appendChild(translationBox);
+
+  if(note.subtitle){
+    const subtitleBox = document.createElement('div');
+    subtitleBox.className = 'subtitle-box';
+    subtitleBox.innerHTML = `
+      <div class="subtitle-badge">영상 자막 번역 (참고용)</div>
+      <div class="caption-subtitle"></div>
+    `;
+    subtitleBox.querySelector('.caption-subtitle').textContent = note.subtitle;
+    block.appendChild(subtitleBox);
+  }
+
+  return block;
+}
+
+const feed = document.getElementById('feed');
+NOTES.forEach((note, idx) => feed.appendChild(buildCard(note, idx)));
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const video = entry.target;
+    if(entry.isIntersecting){ video.play().catch(()=>{}); }
+    else { video.pause(); }
+  });
+}, {threshold:0.6});
+document.querySelectorAll('video').forEach(v => observer.observe(v));
+</script>
+
+</body>
+</html>
