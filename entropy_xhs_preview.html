@@ -52,6 +52,18 @@
   }
   .notice-box p{ margin:0; }
 
+  .week-tabs{
+    max-width:760px; margin:14px auto 0; padding:0 14px;
+    display:flex; gap:8px;
+    font-family:"Pretendard","Malgun Gothic",sans-serif;
+  }
+  .week-tab{
+    flex:1; padding:9px 0; text-align:center;
+    font-size:13.5px; font-weight:600; color:var(--ink-60);
+    background:#f0f0f0; border:none; border-radius:10px; cursor:pointer;
+  }
+  .week-tab.active{ background:var(--red); color:#fff; }
+
   main{
     max-width:760px; margin:0 auto; padding:20px 14px 80px;
     display:flex; flex-direction:column; gap:26px;
@@ -257,6 +269,8 @@
   <p>· 도우인(抖音)에도 동일 콘텐츠 업로드 예정, 텍스트만 더 간결하게 조정 / 별도 미리보기는 없음</p>
 </div>
 
+<div class="week-tabs" id="weekTabs"></div>
+
 <main id="feed"></main>
 
 <footer>
@@ -275,7 +289,8 @@ const ICONS = {
   mute: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`
 };
 
-const NOTES = [
+const WEEKS = [
+ { label: "7.9-7.15", notes: [
   {
     folder: "1",
     media: [
@@ -511,6 +526,205 @@ const NOTES = [
 텍스처가 얇고 가벼워서 고르게 발려요
 쓰고 나서 닦아 넣으면 잘 안 새요`
   }
+ ]},
+ { label: "7.16-7.22", notes: [
+  {
+    folder: "8",
+    media: [
+      {type:"video", src:"8/氛围感视频2_7.7.mp4"}
+    ],
+    zh: `挂在包上的这抹颜色，也太好看了🤎
+
+钥匙扣唇釉挂在包包上，走路带风也带点小心机
+不用翻包找口红，低头就在眼前，顺手就涂
+这份随身的仪式感，比补妆本身更治愈
+
+#entropymakeup #钥匙扣唇釉 #随身好物`,
+    ko: `가방에 걸어둔 이 컬러, 너무 예쁘잖아🤎
+
+키링 틴트를 가방에 걸어두면 걸을 때마다 포인트가 되고 은근 신경 쓴 티도 나요
+립스틱 찾으려고 가방 뒤질 필요 없이, 고개만 숙이면 바로 눈앞에
+손 가는 대로 쓱 바르는 이 리추얼이, 화장 고치는 것보다 더 힐링돼요
+
+#entropymakeup #키링 틴트 #데일리 휴대템`
+  },
+  {
+    folder: "9",
+    media: [
+      {type:"image", src:"9/首图.jpg"},
+      {type:"image", src:"9/C_9r3wUz6uv_slide1_photo.jpg"},
+      {type:"video", src:"9/C_9r3wUz6uv_slide2_video.mp4"},
+      {type:"image", src:"9/C_9r3wUz6uv_slide3_photo.jpg"},
+      {type:"image", src:"9/C_9r3wUz6uv_slide4_photo.jpg"}
+    ],
+    zh: `🫧超亮！夏日必备的Charm Tint 水光唇釉试色.  ₊ ⊹
+
+水光感唇釉，涂上去自带滤镜效果
+5个色号随便选，看这次哪个最戳你
+
+🫧 OPAL CHARM
+浅粉裸调，像被水光浸润过的珍珠光泽，日常显白不挑皮
+🥃 AMBER CHARM
+深邃的酒红棕调，琥珀般温润，气质拿捏
+❤️ RUBY CHARM
+浓郁的正红调，像红宝石一样耀眼，涂上就很有存在感
+🧡 WATER ROSE CHARM
+暖橘棕调，白开水妆必备的蜜桃乌龙茶色
+🍑 SUN STONE CHARM
+暖橙桃调，像被阳光晒过的桃子，甜而不腻
+
+评论区的宝宝们都pick哪个色号？
+
+#ENTROPY #水光唇釉试色 #Charm Tint #黄皮显白唇色`,
+    ko: `🫧 완전 반짝! 여름 필수템 Charm Tint 물광 틴트 발색.  ₊ ⊹
+
+물광 텍스처 틴트라 바르기만 해도 필터 낀 듯한 효과
+5가지 컬러 중 아무거나 골라도 이번엔 뭐가 제일 취향저격일지
+
+🫧 OPAL CHARM
+연한 누디 핑크, 물기 머금은 진주빛 광택, 데일리로 발라도 안 뜨고 화사해요
+🥃 AMBER CHARM
+깊은 와인 브라운 톤, 호박색처럼 은은하게, 분위기 있게 잡아줘요
+❤️ RUBY CHARM
+진한 레드 톤, 루비처럼 빛나서 바르는 순간 존재감 확실
+🧡 WATER ROSE CHARM
+따뜻한 오렌지 브라운 톤, 데일리 메이크업에도 매치하기 좋은 피치 우롱차 컬러
+🍑 SUN STONE CHARM
+따뜻한 오렌지 피치 톤, 햇살 머금은 복숭아처럼 달콤하지만 과하지 않아요
+
+댓글로 어떤 컬러 픽 했는지 알려주세요!
+
+#ENTROPY #물광틴트발색 #Charm Tint #웜톤 화사 립컬러`
+  },
+  {
+    folder: "10",
+    media: [
+      {type:"video", src:"10/260227_01.mp4"}
+    ],
+    zh: `🇰🇷氛围感被这四步彻底拿捏了
+
+贴肤的底妆打底，腮红晕开像天生好气色
+补一层唇釉，整张脸瞬间有了神采
+带闪片的腮红叠加在颧骨上，当高光用也很自然
+不是单靠一个产品，四个凑在一起才是这张脸的答案
+
+#entropy #伪素颜感 #氛围感妆容`,
+    ko: `🇰🇷 분위기 있는 무드 메이크업, 이 4단계로 완성
+
+피부에 밀착되는 베이스 메이크업 먼저 깔고, 블러셔로 자연스러운 혈색 표현
+틴트 한 겹 더하면 얼굴 전체에 생기가 확 살아나요
+펄 있는 블러셔를 광대에 살짝 얹으면 하이라이터처럼 자연스럽게
+한 가지 제품만으론 안 돼요, 이 네 가지가 모여야 완성되는 얼굴이에요
+
+#entropy #꾸안꾸 #무드 메이크업`
+  },
+  {
+    folder: "11",
+    media: [
+      {type:"video", src:"11/粉底液/粉底液.mp4"}
+    ],
+    zh: `刮刀藏进瓶身，这支粉底液换了个思路
+
+内置刮刀直接蘸取上脸，用量好控制不用额外找工具
+质地轻薄好推开，贴肤不闷不显厚重
+色号也做了细化，三个色号都精确到小数点
+肤色介于两个色号之间也能精准贴合
+
+19.8号 偏粉调冷皮，卡在19号和偏亮21号之间
+21.1号 标准象牙色调，中性皮最容易匹配的区间
+22.8号 柔和米黄调，黄调偏亮的中间肤色
+
+#entropymakeup #刮刀粉底液 #日常通勤淡妆 #一体式设计`,
+    ko: `스패츌러를 병 속에 쏙 숨겼어요, 완전히 새로운 발상의 파운데이션이에요
+
+내장된 스패츌러로 바로 찍어 바르니 양 조절이 쉽고 따로 도구 찾을 필요 없어요
+가벼운 텍스처로 잘 펴발리고, 밀착되면서도 답답하거나 두껍게 뜨지 않아요
+색상도 더 세분화해서 세 가지 컬러 모두 소수점까지 정교하게 나눴어요
+피부색이 두 색상 사이에 있어도 정확하게 매치할 수 있어요
+
+19.8호 핑크빛 도는 쿨톤, 19호와 밝은 21호 사이 중간 톤
+21.1호 스탠다드 아이보리 톤, 중성 피부가 가장 매치하기 쉬운 구간
+22.8호 부드러운 베이지 톤, 웜톤 중에서도 밝은 중간 피부색
+
+#entropymakeup #스패츌러 파운데이션 #데일리 출근 메이크업 #일체형 디자인`
+  },
+  {
+    folder: "12",
+    media: [
+      {type:"video", src:"12/氛围感视频3_7.7.mp4"}
+    ],
+    zh: `周末下午茶，包包也要挂点甜的
+
+冰淇淋配一口拿铁，唇釉的颜色也刚刚好
+挂在包边的这抹颜色，成了下午茶最好看的点缀
+entropy钥匙扣唇釉，颜值和实用一起挂在了包上
+
+#entropymakeup #钥匙扣唇釉 #包挂`,
+    ko: `주말 오후 티타임, 가방에도 달콤함 하나 걸어줄게요
+
+아이스크림에 라떼 한 모금, 틴트 컬러까지 딱 맞아떨어져요
+가방 끝에 걸린 이 컬러가 오후 티타임의 가장 예쁜 포인트가 됐어요
+entropy 키링 틴트, 예쁨과 실용성을 한 번에 가방에 걸었어요
+
+#entropymakeup #키링 틴트 #가방 액세서리`
+  },
+  {
+    folder: "13",
+    media: [
+      {type:"video", src:"13/氛围感视频4_7.7.mp4"}
+    ],
+    zh: `包会换，entropy钥匙扣唇釉不会缺席
+
+今天背通勤包，明天换机能背包，后天拎帆布袋出门
+不管选哪个，挂上这支唇釉，风格瞬间就位
+它才是真正跟着你走的那个"夏日标配"
+
+#entropymakeup #钥匙扣唇釉 #百搭配饰`,
+    ko: `가방은 바뀌어도, entropy 키링 틴트는 늘 함께해요
+
+오늘은 출근 가방, 내일은 기능성 백팩, 모레는 캔버스백 들고 외출
+어떤 가방이든 이 틴트만 걸면 스타일이 바로 완성돼요
+진짜 어디든 따라다니는 "여름 필수템"은 바로 이거예요
+
+#entropymakeup #키링 틴트 #만능 액세서리`
+  },
+  {
+    folder: "14",
+    media: [
+      {type:"video", src:"14/加音频字幕版.mp4"}
+    ],
+    zh: `唇釉的隐藏玩法，一次性看全！
+
+🌰G6 POUDRE GEM 静谧木调粉
+💭G7 PENA GEM 淡雅柔雾灰
+🍫G8 BRONZE GEM 醇棕沉香
+🍒G9 RHODIA GEM 初秋石榴果
+🍷G10 VIOLET GEM 红酒佳人
+
+G7+G9 雾感打底、果汁感提气色，两层叠加刚好中和
+G6+G10 粉调温柔垫底，紫红提气场，低调显白又不寡淡
+
+不仅可以叠涂增加层次感，还可以涂在脸颊上当腮红，全妆氛围感拿捏！
+手臂试色也安排上了，五个色号一次看全
+
+#entropymakeup #钥匙扣唇釉`,
+    ko: `틴트의 숨은 활용법, 한 번에 다 보여드려요!
+
+🌰 G6 POUDRE GEM 차분한 우디 핑크
+💭 G7 PENA GEM 은은한 소프트 그레이
+🍫 G8 BRONZE GEM 짙은 브론즈 브라운
+🍒 G9 RHODIA GEM 초가을 석류빛
+🍷 G10 VIOLET GEM 와인빛 바이올렛
+
+G7+G9 무드감 베이스에 과즙미 살짝, 두 겹 레이어링하면 딱 중화돼요
+G6+G10 핑크빛으로 부드럽게 깔고 바이올렛으로 포인트, 은은하게 화사해요
+
+레이어링하면 깊이감이 더해지고, 볼에 발라 블러셔로 써도 좋아요. 무드 메이크업 완성!
+팔뚝 발색도 준비했어요, 다섯 컬러 한 번에 비교해보세요
+
+#entropymakeup #키링 틴트`
+  }
+ ]}
 ];
 
 function escapeHtml(str){
@@ -532,7 +746,7 @@ function splitTitleBody(zh){
   return {title, rest};
 }
 
-function buildCard(note, idx){
+function buildCard(note, idx, totalNotes){
   const block = document.createElement('div');
   block.className = 'note-block';
 
@@ -558,7 +772,7 @@ function buildCard(note, idx){
 
   const noteIndex = document.createElement('div');
   noteIndex.className = 'overlay-left';
-  noteIndex.textContent = (idx+1) + ' / ' + NOTES.length;
+  noteIndex.textContent = (idx+1) + ' / ' + totalNotes;
   mediaCol.appendChild(noteIndex);
 
   const track = document.createElement('div');
@@ -750,9 +964,6 @@ function buildCard(note, idx){
   return block;
 }
 
-const feed = document.getElementById('feed');
-NOTES.forEach((note, idx) => feed.appendChild(buildCard(note, idx)));
-
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     const video = entry.target;
@@ -760,7 +971,38 @@ const observer = new IntersectionObserver(entries => {
     else { video.pause(); }
   });
 }, {threshold:0.6});
-document.querySelectorAll('video').forEach(v => observer.observe(v));
+
+const feed = document.getElementById('feed');
+const tabsWrap = document.getElementById('weekTabs');
+let activeWeek = WEEKS.length - 1;
+
+function renderFeed(){
+  feed.querySelectorAll('video').forEach(v => observer.unobserve(v));
+  feed.innerHTML = '';
+  const notes = WEEKS[activeWeek].notes;
+  notes.forEach((note, idx) => feed.appendChild(buildCard(note, idx, notes.length)));
+  feed.querySelectorAll('video').forEach(v => observer.observe(v));
+}
+
+function renderTabs(){
+  tabsWrap.innerHTML = '';
+  WEEKS.forEach((week, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'week-tab' + (i === activeWeek ? ' active' : '');
+    btn.textContent = week.label;
+    btn.addEventListener('click', () => {
+      if(activeWeek === i) return;
+      activeWeek = i;
+      renderTabs();
+      renderFeed();
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+    tabsWrap.appendChild(btn);
+  });
+}
+
+renderTabs();
+renderFeed();
 </script>
 
 </body>
